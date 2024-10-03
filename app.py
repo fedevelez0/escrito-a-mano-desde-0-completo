@@ -32,31 +32,28 @@ with st.sidebar:
     st.subheader("En esta aplicación veremos la capacidad que ahora tiene una máquina de interpretar un boceto")
 st.subheader("Dibuja el boceto en el panel  y presiona el botón para analizarla")
 
-# Add canvas component
-#bg_image = st.sidebar.file_uploader("Cargar Imagen:", type=["png", "jpg"])
-# Specify canvas parameters in application
-drawing_mode = "freedraw"
-stroke_width = st.sidebar.slider('Selecciona el ancho de línea', 1, 30, 5)
-#stroke_color = '#FFFFFF' # Set background color to white
-#bg_color = '#000000'
-stroke_color = st.color_picker("Color de Trazo", "#000000")
-bg_color = '#FFFFFF'
-#realtime_update = st.sidebar.checkbox("Update in realtime", True)
-drawing_mode = st.sidebar.selectbox(
-    "Herramienta de dibujo:",
-    ("freedraw", "line", "rect", "circle", "transform", "polygon", "point"),
-  )
+# Sidebar settings
+st.sidebar.title("🎨 Propiedades del Tablero")
+drawing_mode = st.sidebar.selectbox("Herramienta de Dibujo", ["freedraw", "line", "rect", "circle", "polygon"])
+stroke_width = st.sidebar.slider('Selecciona el ancho de línea', 1, 30, 15)
+stroke_color = st.sidebar.color_picker('Color de trazo', '#FF6347')  # Color vibrante (Tomato)
+bg_color = '#1E1E1E'       # Fondo oscuro
 
-# Create a canvas component
+# Set fill_color based on drawing_mode
+if drawing_mode in ["rect", "circle", "polygon"]:
+    fill_color = "rgba(0, 0, 0, 0)"  # Sin relleno
+else:
+    fill_color = "rgba(0, 204, 204, 0.3)"  # Color de relleno en un tono aqua
+
+# Create canvas
 canvas_result = st_canvas(
-    fill_color="rgba(255, 165, 0, 0.3)",  # Fixed fill color with some opacity
+    fill_color=fill_color,  # Color de relleno según el modo
     stroke_width=stroke_width,
     stroke_color=stroke_color,
     background_color=bg_color,
-    height=300,
-    width=400,
-    #background_image= None #Image.open(bg_image) if bg_image else None,
-    drawing_mode=drawing_mode,
+    height=450,  # Tamaño del canvas
+    width=450,
+    drawing_mode=drawing_mode,  # Establecer el modo de dibujo seleccionado
     key="canvas",
 )
 
